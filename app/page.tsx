@@ -5,6 +5,8 @@ import { useState, useEffect, useRef } from "react";
 export default function Home() {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("");
+  const [response, setResponse] = useState("");
+  const [textQuestion, setTextQuestion] = useState("");
   const recognitionRef = useRef(null);
 
   // Set up speech recognition
@@ -71,11 +73,28 @@ export default function Home() {
       >
         {isListening ? "Stop Listening" : "Talk to KidBuddy"}
       </button>
-      {transcript && (
-        <p className="mt-6 text-xl text-center text-indigo-800 font-medium">
-          You said: "{transcript}"
-        </p>
-      )}
+      <div className="mt-8 w-full max-w-md flex flex-col gap-4">
+  <input
+    type="text"
+    value={textQuestion}
+    onChange={(e) => setTextQuestion(e.target.value)}
+    placeholder="Type your question here"
+    className="w-full p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+  />
+  <button
+    onClick={() => getAIResponse(textQuestion)}
+    className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+    disabled={!textQuestion.trim()}
+  >
+    Submit Question
+  </button>
+</div>
+      {response && (
+  <p className="mt-4 text-indigo-700 text-center font-semibold text-lg">
+    KidBuddy says: "{response}"
+  </p>
+)}
+
     </main>
   );
 }
